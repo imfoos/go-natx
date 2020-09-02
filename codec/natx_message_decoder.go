@@ -20,7 +20,3 @@ func (p *NatxMessageDecoder) CodecName() string {
 func (p *NatxMessageDecoder) HandleRead(ctx netty.InboundContext, message netty.Message) {
 	ctx.HandleRead(p.Decode(ctx, message))
 }
-
-//func (p *NatxMessageDecoder) HandleWrite(ctx netty.OutboundContext, message netty.Message) {
-//	ctx.HandleWrite(message)
-//}

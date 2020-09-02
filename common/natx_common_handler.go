@@ -12,7 +12,6 @@ import (
 )
 
 type NatxCommonHandler struct {
-	//netty.CodecHandler
 	Ctx netty.ActiveContext
 }
 
@@ -23,15 +22,6 @@ func (p *NatxCommonHandler) HandleActive(ctx netty.ActiveContext) {
 func (p *NatxCommonHandler) HandleWrite(ctx netty.OutboundContext, message netty.Message) {
 	ctx.HandleWrite(message)
 }
-
-//func (p *NatxCommonHandler) HandleRead(ctx netty.InboundContext, message netty.Message) {
-//	ctx.HandleRead(message)
-//}
-//
-//func (p *NatxCommonHandler) HandleWrite(ctx netty.OutboundContext, message netty.Message) {
-//	//ctx.HandleWrite(message)
-//	ctx.HandleWrite(message)
-//}
 
 func (p *NatxCommonHandler) HandleException(ctx netty.ExceptionContext, ex netty.Exception) {
 	fmt.Println(ctx)

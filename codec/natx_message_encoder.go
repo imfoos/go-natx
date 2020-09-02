@@ -26,18 +26,8 @@ func (p *NatxMessageEncoder) HandleWrite(ctx netty.OutboundContext, message nett
 	switch message.(type) {
 	case *protocol.NatxMessage:
 		p.Encode(ctx, message.(*protocol.NatxMessage), out)
-		//if out.Len() > 150 {
-		//fmt.Printf("out: %v \n", out)
-		//}
 		ctx.HandleWrite(out)
 	case []byte:
 		ctx.HandleWrite(message)
 	}
-	//ctx.Write(out)
 }
-
-//func (p *NatxMessageEncoder) HandleRead(ctx netty.InboundContext, message netty.Message) {
-//
-//	fmt.Println("natxMessageEncoder handle read")
-//	ctx.HandleRead(message)
-//}

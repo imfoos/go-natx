@@ -4,11 +4,10 @@ import (
 	"github.com/go-netty/go-netty"
 	"github.com/imfoos/go-natx/codec"
 	"github.com/imfoos/go-natx/common"
-	"log"
-	"sync"
-	//"probe/tunnel/messagecodec"
 	"github.com/imfoos/go-natx/net"
 	"github.com/imfoos/go-natx/protocol"
+	"log"
+	"sync"
 )
 
 type NatxClientHandler struct {
@@ -20,7 +19,6 @@ type NatxClientHandler struct {
 	proxyPort         int
 	channelHandlerMap *ProxyHandlerMap
 	channelExector    netty.ChannelExecutorFactory
-	once              sync.Once
 }
 
 type ProxyHandlerMap struct {
@@ -58,14 +56,10 @@ func NewNatxClientHandler(port int, password, proxyAddress string, proxyPort int
 		proxyPort:         proxyPort,
 		channelHandlerMap: initProxyHandlerMap(),
 		channelExector:    netty.NewFixedChannelExecutor(100, 100),
-		once:              sync.Once{},
 	}
 }
 
 func (p *NatxClientHandler) HandleActive(ctx netty.ActiveContext) {
-
-	//buffer := bytes.NewBuffer(nil)
-	//buffer
 
 	metaData := make(map[string]interface{})
 	metaData["port"] = p.port
@@ -76,7 +70,6 @@ func (p *NatxClientHandler) HandleActive(ctx netty.ActiveContext) {
 		MetaData: metaData,
 	}
 	ctx.Write(natxMessage)
-	//p.NatxCommonHandler.HandleWrite(ctx, natxMessage)
 	p.NatxCommonHandler.HandleActive(ctx)
 }
 
@@ -94,9 +87,6 @@ func (p *NatxClientHandler) HandleEvent(ctx netty.EventContext, event netty.Even
 		//log.Println("HandleEvent ReadIdleEvent  .......")
 		ctx.Close(nil)
 	}
-
-	//ctx.HandleInactive(ex)
-	//ctx.HandleEvent(event)
 }
 
 func (p *NatxClientHandler) HandleRead(ctx netty.InboundContext, message netty.Message) {
@@ -145,7 +135,6 @@ func (p *NatxClientHandler) processConnected(natxMessage *protocol.NatxMessage) 
 			log.Printf("LocalProxyHandler Connect , %v \n", channelId)
 			ch <- struct{}{}
 		})
-		//delete(handler.channelHandlerMap, channelId)
 		//log.Println("NatxClientHandler processConnected.... delete")
 		natxMessage := &protocol.NatxMessage{
 			Type:     protocol.DISCONNECTED,
@@ -155,7 +144,6 @@ func (p *NatxClientHandler) processConnected(natxMessage *protocol.NatxMessage) 
 	}()
 	<-ch
 	//log.Println("NatxClientHandler processConnected...")
-
 }
 
 func (p *NatxClientHandler) processDisconnected(natxMessage *protocol.NatxMessage) {
@@ -170,10 +158,6 @@ func (p *NatxClientHandler) processDisconnected(natxMessage *protocol.NatxMessag
 }
 
 func (p *NatxClientHandler) processData(natxMessage *protocol.NatxMessage) {
-
-	//p.once.Do(func() {
-	//	time.Sleep(time.Second)
-	//})
 
 	channelId := natxMessage.MetaData["channelId"].(string)
 	handler := p.channelHandlerMap.Get(channelId)
