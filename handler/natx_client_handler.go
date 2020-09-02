@@ -133,9 +133,7 @@ func (p *NatxClientHandler) processConnected(natxMessage *protocol.NatxMessage) 
 				AddLast(localProxyHandler)
 			handler.channelHandlerMap.Set(channelId, localProxyHandler)
 			log.Printf("LocalProxyHandler Connect , %v \n", channelId)
-			ch <- struct{}{}
-		})
-		//log.Println("NatxClientHandler processConnected.... delete")
+		}, ch)
 		natxMessage := &protocol.NatxMessage{
 			Type:     protocol.DISCONNECTED,
 			MetaData: map[string]interface{}{"channelId": channelId},
